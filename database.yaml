@@ -8,10 +8,10 @@ connections:
   default:
     type: postgresql
     host: localhost
-    port: 5454
-    database: my_app
+    port: 5432
+    database: simple_tracker
     username: postgres
-    password: postgres
+    password: mnbvcxz
     ssl: false
     connection_timeout: 30
     query_timeout: 30

@@ -2,14 +2,15 @@
 
 A production-ready Dart backend template built on the **Gisila** stack:
 
-| Package | Role |
-|---------|------|
-| `gisila` | Shelf-based HTTP framework: CORS, rate-limiting, middleware, codegen |
-| `gisila_orm` | Schema-driven PostgreSQL ORM: YAML → Dart models + SQL |
-| `gisila_doc` | OpenAPI 3.1 spec generation + Swagger UI / ReDoc |
-| `gisila_studio` | Django-style admin panel from ORM table metadata |
+| Package         | Role                                                                 |
+| --------------- | -------------------------------------------------------------------- |
+| `gisila`        | Shelf-based HTTP framework: CORS, rate-limiting, middleware, codegen |
+| `gisila_orm`    | Schema-driven PostgreSQL ORM: YAML → Dart models + SQL               |
+| `gisila_doc`    | OpenAPI 3.1 spec generation + Swagger UI / ReDoc                     |
+| `gisila_studio` | Django-style admin panel from ORM table metadata                     |
 
 Out of the box you get:
+
 - JWT authentication (register, login, `/auth/me`)
 - Users CRUD endpoints
 - OpenAPI docs at `/docs` (Swagger UI) and `/redoc`
@@ -49,7 +50,7 @@ docker compose up -d
 ```
 
 This starts Postgres on **localhost:5454** (mapped from container port 5432).
-The default credentials match `database.yaml`: `postgres / postgres / my_app`.
+The default credentials match `database.yaml`: `postgres / postgres / simple_tracker`.
 
 ### 4. Generate ORM models and run migrations
 
@@ -74,8 +75,9 @@ dart run bin/server.dart
 ```
 
 Open:
+
 - API docs → <http://localhost:8000/docs>
-- Admin panel → <http://localhost:8000/studio>  _(default: admin / admin)_
+- Admin panel → <http://localhost:8000/studio> _(default: admin / admin)_
 
 ---
 
@@ -86,7 +88,7 @@ dart-backend-template/
 ├── bin/
 │   └── server.dart                 # Entry point; hot-reload + multi-isolate
 ├── lib/
-│   ├── my_app.dart                 # GisilaApp wiring (middleware, routes, docs)
+│   ├── simple_tracker.dart                 # GisilaApp wiring (middleware, routes, docs)
 │   ├── admin.dart                  # GisilaStudio model registrations
 │   ├── config.dart                 # env, logger, databaseConfig, init()
 │   ├── endpoints/
@@ -119,11 +121,11 @@ dart-backend-template/
 
 ## Renaming the project
 
-1. Replace `my_app` with your project name everywhere:
+1. Replace `simple_tracker` with your project name everywhere:
    ```bash
    # macOS / Linux
    find . -type f \( -name "*.dart" -o -name "*.yaml" \) \
-     -exec sed -i 's/my_app/your_project_name/g' {} +
+     -exec sed -i 's/simple_tracker/your_project_name/g' {} +
    ```
 2. Rename the folder: `mv dart-backend-template your_project_name`
 
@@ -167,12 +169,13 @@ dart-backend-template/
 ## Adding a new endpoint
 
 1. Create `lib/endpoints/posts.dart`:
+
    ```dart
    import 'package:gisila_doc/gisila_doc.dart' hide Query;
    import 'package:gisila_orm/gisila.dart';
-   import 'package:my_app/config.dart';
-   import 'package:my_app/models/models.dart';
-   import 'package:my_app/utils/utils.dart';
+   import 'package:simple_tracker/config.dart';
+   import 'package:simple_tracker/models/models.dart';
+   import 'package:simple_tracker/utils/utils.dart';
    import 'package:shelf/shelf.dart';
    import 'package:shelf_router/shelf_router.dart';
 
@@ -192,8 +195,9 @@ dart-backend-template/
          );
    }
    ```
+
 2. Run `dart run build_runner build` to generate `posts.g.dart`.
-3. Register in `lib/my_app.dart`:
+3. Register in `lib/simple_tracker.dart`:
    ```dart
    PostsApi().attachOpenApi(spec, router);
    ```
@@ -202,13 +206,13 @@ dart-backend-template/
 
 ## Environment variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `8000` | HTTP listen port |
-| `JWT_SECRET` | `change-me-to-a-random-secret` | HMAC secret for signing JWTs |
-| `JWT_EXPIRE_DAYS` | `30` | Token lifetime in days |
-| `STUDIO_USERNAME` | `admin` | Admin panel username |
-| `STUDIO_PASSWORD` | `admin` | Admin panel password |
+| Variable          | Default                        | Description                  |
+| ----------------- | ------------------------------ | ---------------------------- |
+| `PORT`            | `8000`                         | HTTP listen port             |
+| `JWT_SECRET`      | `change-me-to-a-random-secret` | HMAC secret for signing JWTs |
+| `JWT_EXPIRE_DAYS` | `30`                           | Token lifetime in days       |
+| `STUDIO_USERNAME` | `admin`                        | Admin panel username         |
+| `STUDIO_PASSWORD` | `admin`                        | Admin panel password         |
 
 ---
 

@@ -6,7 +6,7 @@ services:
     ports:
       - 5454:5432
     environment:
-      POSTGRES_DB: my_app
+      POSTGRES_DB: simple_tracker
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
