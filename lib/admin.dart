@@ -1,7 +1,7 @@
 import 'package:gisila_orm/gisila.dart';
 import 'package:gisila_studio/gisila_studio.dart';
-import 'package:my_app/config.dart';
-import 'package:my_app/models/models.dart';
+import 'package:simple_tracker/config.dart';
+import 'package:simple_tracker/models/models.dart';
 import 'package:shelf/shelf.dart';
 
 /// Returns a lazy Shelf [Handler] that mounts GisilaStudio at `/studio`.
@@ -9,11 +9,11 @@ import 'package:shelf/shelf.dart';
 /// The [Database] connection is created on the first request so the studio
 /// shares the same lifecycle as the rest of the application.
 Handler adminHandler() {
-  GisilaStudio? studio;
+  Handler? handler;
 
   return (Request req) async {
-    studio ??= await _buildStudio();
-    return studio!.handler()(req);
+    handler ??= (await _buildStudio()).handler();
+    return handler!(req);
   };
 }
 

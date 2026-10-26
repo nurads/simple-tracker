@@ -1,6 +1,6 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:my_app/config.dart';
-import 'package:my_app/models/models.dart';
+import 'package:simple_tracker/config.dart';
+import 'package:simple_tracker/models/models.dart';
 
 /// Stateless JWT helper.
 ///

@@ -10,7 +10,6 @@ User:
       allow_blank: true
     email:
       type: varchar
-      is_null: true
       is_unique: true
       is_index: true
     phone_number:
@@ -21,18 +20,84 @@ User:
     password:
       type: varchar
       is_null: true
-    otp:
-      type: varchar
-      is_null: true
     is_active:
       type: boolean
       is_null: false
     is_staff:
       type: boolean
-      is_null: false
+      default: false
+    is_superuser:
+      type: boolean
+      default: false
+
+    is_email_verified:
+      type: boolean
+      default: false
+
+    is_phone_verified:
+      type: boolean
+      default: false
+
     created_at:
       type: timestamp
       is_null: false
     updated_at:
       type: timestamp
+      is_null: true
+
+Company:
+  columns:
+    name:
+      type: varchar
+      is_null: false
+    phone_number:
+      type: varchar
+      is_null: true
+    email:
+      type: varchar
+      is_null: true
+
+Employee:
+  columns:
+    user:
+      type: foreign_key
+      references: User
+      is_null: false
+      reverse_name: employee_profiles
+      on_delete: cascade
+    company:
+      type: foreign_key
+      references: Company
+      is_null: false
+      reverse_name: company_employees
+      on_delete: cascade
+
+    role:
+      type: foreign_key
+      references: CompanyRole
+      is_null: true
+      reverse_name: employees
+      on_delete: set null
+
+Permission:
+  columns:
+    name:
+      type: varchar
+      is_null: false
+    description:
+      type: text
+
+CompanyRole:
+  columns:
+    name:
+      type: varchar
+      is_null: false
+    description:
+      type: text
+
+    permissions:
+      type: Permission
+      many_to_many: true
+      references: Permission
+      reverse_name: company_roles
       is_null: true
