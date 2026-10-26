@@ -96,7 +96,7 @@ CompanyRole:
       type: text
 
     permissions:
-      type: foreign_key
+      type: Permission
       many_to_many: true
       references: Permission
       reverse_name: company_roles
